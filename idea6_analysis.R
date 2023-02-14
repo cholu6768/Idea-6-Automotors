@@ -1,3 +1,7 @@
+# TODOs: 
+# - change column names into english
+# - check quality on products, family products, store locations
+
 #############################################
 # 0. Import Libraries
 #############################################
