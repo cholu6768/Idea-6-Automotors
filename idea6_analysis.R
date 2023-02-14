@@ -12,6 +12,10 @@ library(dplyr)
 #import csv file
 sales <- as_tibble(read.csv("Ventas.csv", sep = ";"))
 
+#############################################
+# 2. Clean Data
+#############################################
+
 #lowercase all column names
 names(sales) <- tolower(names(sales))
 
