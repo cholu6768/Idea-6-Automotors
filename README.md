@@ -5,7 +5,7 @@ Colombian company with franchises. Offers services and products such as oil chan
 
 ## Project description:
 We have internal company data such as sales and employees.
-They need to analyze the impact of the pandemic to evaluate whether to sell the company, whether to go bankrupt or whether to look for investors to make an expansion into other countries.
+You as a data analyst need to analyze the impact of the pandemic to evaluate whether to sell the company, whether to go bankrupt or whether to look for investors to make an expansion into other countries.
 
 ## Objective:
 The client needs to have all the information already analyzed to make a final decision.
@@ -20,5 +20,9 @@ The client needs to have all the information already analyzed to make a final de
 - Sales made by your employees 
 - Ranking of Sales / Employee Services
 - Add all the indicators that you believe correspond.
+
+## Project Source
+
+*idforideas.com*
 
 
