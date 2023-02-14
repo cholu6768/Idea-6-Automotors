@@ -13,7 +13,7 @@ library(dplyr)
 sales <- as_tibble(read.csv("Ventas.csv", sep = ";"))
 
 #############################################
-# 2. Clean Data
+# 2. Clean and Transform Data
 #############################################
 
 #lowercase all column names
