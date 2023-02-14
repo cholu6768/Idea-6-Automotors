@@ -1,4 +1,4 @@
-# idea6 - PROJECT: AUTOMOTIVE SERVICE "AUTO MOTORS 
+# idea6 - Project: Automotive Service "Auto Motors"
 
 Colombian company with franchises. Offers services and products such as oil change, filter change change of oil, change of filters, sale of tires, rims, among others.
 
