@@ -1,6 +1,7 @@
 # TODOs: 
 # - change column names into english
 # - check quality on products, family products, store locations
+# - convert currency of colombian peso into usd - DONE
 
 #############################################
 # 0. Import Libraries
@@ -14,7 +15,7 @@ library(dplyr)
 #############################################
 
 #import csv file
-sales <- as_tibble(read.csv("Ventas.csv", sep = ";"))
+sales <- as_tibble(read.csv("Data/Ventas.csv", sep = ";"))
 
 #############################################
 # 2. Clean and Transform Data
@@ -38,8 +39,31 @@ sales <- sales %>%
            cantidad = str_replace(cantidad, "1,006", "1006"),
            cantidad = str_replace(cantidad, "1,068", "1068")) 
 
-#convert to proper data types
+#convert data types, convert ventas to USD currency
 sales_tst <- sales %>% 
   mutate(cantidad = as.integer(cantidad),
          ventas = as.numeric(ventas),
-         fecha = as.Date(fecha, "%d/%m/%Y"))
+         fecha = as.Date(fecha, "%d/%m/%Y"),
+         ventas_usd = round((ventas * 0.00023), 2)
+         )
+
+#############################################
+# 3. Analyze Data
+#############################################
+
+#FAMILY PRODUCTS
+#LLANTA: 973 unique types
+#REENCAUCHE: 278 unique types
+#LUBRICANTES: 75 unique types
+#SERVICIOS: 130 unique types
+#FILTROS: 368 unique types
+
+#AREA and NAME OF STORES
+#Bogota: Grandes flotas
+#Engativa: Ventas externas & Calle 80
+#Suba: Suba
+#Usaquen: Santa ana 
+#Barrios unidos: Av Chile
+#Puente aranda: Calle 13
+
+
