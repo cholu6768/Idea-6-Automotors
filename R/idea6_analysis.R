@@ -1,7 +1,10 @@
 # TODOs: 
-# - change column names into english
-# - check quality on products, family products, store locations
-# - convert currency of colombian peso into usd - DONE
+# - change column names into English
+# - check quality on products, family products, store locations - LOOKED GOOD
+# - convert currency of Colombian peso into USD - DONE
+# - how many customers per store and their avg revenue per customer, min and max sale dates
+# - time periods of products and services per store  
+# - employees per store
 
 #############################################
 # 0. Import Libraries
@@ -9,6 +12,7 @@
 
 library(tidyverse)
 library(dplyr)
+library(tidyr)
 
 #############################################
 # 1. Read Data
@@ -66,4 +70,37 @@ sales_tst <- sales %>%
 #Barrios unidos: Av Chile
 #Puente aranda: Calle 13
 
+#TOTAL Revenue in USD
+sales_tst %>% 
+  summarise(total_revenue = sum(ventas_usd))#17,118,022 USD
 
+#TOTAL PRODUCTS SOLD
+sales_tst %>% 
+  filter(familia != "SERVICIOS") %>% 
+  summarise(items_sold = sum(cantidad))#103,744 Items
+
+#TOTAL REVENUE SERVICES
+sales_tst %>% 
+  filter(familia == "SERVICIOS") %>% 
+  summarise(revenue_services = sum(ventas_usd))#2,591,331 USD
+
+#TOTAL SERVICES OFFERED 
+sales_tst %>% 
+  filter(familia == "SERVICIOS") %>% 
+  summarise(revenue_services = sum(cantidad))#213,395 Services offered
+
+#NUMBER OF STORES
+sales_tst %>% 
+  summarise(stores = n_distinct(sede))#7 stores
+
+#TOTAL PRODUCT FAMILY REVENUE PER STORE
+sales_tst %>% 
+  group_by(sede, familia) %>% 
+  summarise(revenue = sum(ventas_usd)) %>% 
+  pivot_wider(names_from = familia, values_from = revenue)
+
+#REVENUE PER EMPLOYEE
+sales_tst %>% 
+  group_by(sede,empleado, familia) %>% 
+  summarise(revenue = sum(ventas_usd)) %>% 
+  pivot_wider(names_from = familia, values_from = revenue)
