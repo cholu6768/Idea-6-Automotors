@@ -3,7 +3,7 @@
 # - check quality on products, family products, store locations - LOOKED GOOD
 # - convert currency of Colombian peso into USD - DONE
 # - how many customers per store and their avg revenue per customer, min and max sale dates
-# - time periods of products and services per store  
+# - seasonality of products and services per store as well as revenues  
 # - employees per store - DONE
 
 #############################################
