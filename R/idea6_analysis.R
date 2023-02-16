@@ -4,7 +4,7 @@
 # - convert currency of Colombian peso into USD - DONE
 # - how many customers per store and their avg revenue per customer, min and max sale dates
 # - time periods of products and services per store  
-# - employees per store
+# - employees per store - DONE
 
 #############################################
 # 0. Import Libraries
@@ -13,6 +13,9 @@
 library(tidyverse)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
+library(plotly)
+library(lubridate)
 
 #############################################
 # 1. Read Data
@@ -104,3 +107,43 @@ sales_tst %>%
   group_by(sede,empleado, familia) %>% 
   summarise(revenue = sum(ventas_usd)) %>% 
   pivot_wider(names_from = familia, values_from = revenue)
+
+#Customers per store
+cust_store <- sales_tst %>% 
+  group_by(sede, familia) %>% 
+  summarise(customers = n_distinct(idcliente),
+            mean_revenue = mean(ventas_usd),
+            median_revenue = median(ventas_usd))
+
+#SUBA seems to be the worst store even though it the second most clients
+#Ventas externas and Grandes flotas bring the most revenue to the business
+#The familie products that bring the most money are llantas and Reencauche
+ggplotly(ggplot(cust_store, aes(fill=familia, y=customers, x=sede)) + 
+  geom_bar(position="dodge", stat="identity"))
+
+ggplotly(ggplot(cust_store, aes(fill=familia, y=median_revenue, x=sede)) + 
+           geom_bar(position="dodge", stat="identity"))
+
+#Employees per store
+#Apart from ventas externas and grandes flotas, SANTA ANA is doing good based on its
+#revenues, num of customers and amount of employees.
+#SUBA has the second most customers but is also the second with least employees..
+sales_tst %>% 
+  group_by(sede) %>% 
+  summarise(employees = n_distinct(empleado),
+            customers = n_distinct(idcliente),
+            mean_revenue = mean(ventas_usd),
+            median_revenue = median(ventas_usd)) 
+
+#Seasonality
+store_season <- sales_tst %>% 
+  group_by(sede, year(fecha)) %>% 
+  summarise(employees = n_distinct(empleado),
+            customers = n_distinct(idcliente),
+            mean_revenue = mean(ventas_usd),
+            median_revenue = median(ventas_usd))
+
+#SUBA and Calle 80 had the lowest mean revenues across 5 years
+ggplotly(ggplot(store_season, aes(x=`year(fecha)`, y=mean_revenue, color=sede)) + 
+           geom_line()+
+           geom_point())
