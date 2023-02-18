@@ -112,6 +112,7 @@ sales_tst %>%
 cust_store <- sales_tst %>% 
   group_by(sede, familia) %>% 
   summarise(customers = n_distinct(idcliente),
+            revenue = sum(ventas_usd),
             mean_revenue = mean(ventas_usd),
             median_revenue = median(ventas_usd))
 
@@ -124,14 +125,18 @@ ggplotly(ggplot(cust_store, aes(fill=familia, y=customers, x=sede)) +
 ggplotly(ggplot(cust_store, aes(fill=familia, y=median_revenue, x=sede)) + 
            geom_bar(position="dodge", stat="identity"))
 
+ggplotly(ggplot(cust_store, aes(fill=familia, y=revenue, x=sede)) + 
+           geom_bar(position="dodge", stat="identity"))
+
 #Employees per store
 #Apart from ventas externas and grandes flotas, SANTA ANA is doing good based on its
-#revenues, num of customers and amount of employees.
+#average revenues, num of customers and amount of employees.
 #SUBA has the second most customers but is also the second with least employees..
 sales_tst %>% 
   group_by(sede) %>% 
   summarise(employees = n_distinct(empleado),
             customers = n_distinct(idcliente),
+            revenue = sum(ventas_usd),
             mean_revenue = mean(ventas_usd),
             median_revenue = median(ventas_usd)) 
 
@@ -140,10 +145,27 @@ store_season <- sales_tst %>%
   group_by(sede, year(fecha)) %>% 
   summarise(employees = n_distinct(empleado),
             customers = n_distinct(idcliente),
+            revenue = sum(ventas_usd),
             mean_revenue = mean(ventas_usd),
             median_revenue = median(ventas_usd))
 
 #SUBA and Calle 80 had the lowest mean revenues across 5 years
-ggplotly(ggplot(store_season, aes(x=`year(fecha)`, y=mean_revenue, color=sede)) + 
+ggplotly(ggplot(store_season, aes(x=`year(fecha)`, y=revenue, color=sede)) + 
            geom_line()+
            geom_point())
+
+#compare revenue per store with average mean revenue
+#without taking Grandes flotas and Ventas externas
+test_reve <- sales_tst %>%
+  filter(!sede %in% c("Grandes flotas", "Ventas externas")) %>% 
+  group_by(sede, year(fecha)) %>% 
+  summarise(revenue = sum(ventas_usd)) %>% 
+  ungroup() %>% 
+  mutate(tot_mean = mean(revenue))
+
+ggplotly(ggplot(test_reve, aes(x=`year(fecha)`, y=revenue, color=sede)) + 
+           geom_line()+
+           geom_hline(aes(yintercept = mean(revenue)), color="blue") +
+           geom_point())
+
+
