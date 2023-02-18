@@ -161,11 +161,23 @@ test_reve <- sales_tst %>%
   group_by(sede, year(fecha)) %>% 
   summarise(revenue = sum(ventas_usd)) %>% 
   ungroup() %>% 
-  mutate(tot_mean = mean(revenue))
+  mutate(tot_mean = mean(revenue)) %>% 
+  rename(jahr = `year(fecha)`)
 
-ggplotly(ggplot(test_reve, aes(x=`year(fecha)`, y=revenue, color=sede)) + 
+test_reve_2 <- test_reve %>% 
+  group_by(jahr) %>% 
+  summarise(mean_rev = median(revenue))
+
+test_reve_3 <- test_reve %>% 
+  inner_join(test_reve_2, by= "jahr")
+
+#by checking the mean revenues of each year compared to the revenue 
+#of the stores, we can see that only Calle 80 and Av.Chile(2018,2019) were the only stores
+#to have values over the average, if I use the median Av.Chile also gets an above value in 2017
+ggplotly(ggplot(test_reve_3, aes(x=jahr, y=revenue, color=sede)) + 
            geom_line()+
-           geom_hline(aes(yintercept = mean(revenue)), color="blue") +
-           geom_point())
+           #geom_hline(aes(yintercept = mean_rev), color="blue") +
+           geom_point()+
+           geom_line(aes(x=jahr, y=mean_rev), color="blue"))
 
 
