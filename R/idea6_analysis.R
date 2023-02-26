@@ -4,6 +4,7 @@
 # - convert currency of Colombian peso into USD - DONE
 # - how many customers per store and their avg revenue per customer, min and max sale dates
 # - seasonality of products and services per store as well as revenues  
+# - Apply ARIMA to predict monthly sales per store in 2020 
 # - employees per store - DONE
 
 #############################################
